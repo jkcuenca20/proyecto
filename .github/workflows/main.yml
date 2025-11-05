@@ -70,13 +70,7 @@ jobs:
         run: |
           oc project ${NAMESPACE} || oc new-project ${NAMESPACE}
           helm upgrade --install comment-system ./comment-system-chart \
-            --set front.image.repository=$DOCKER_USER/ms-front \
-            --set front.image.tag=${{ env.TAG }} \
-            --set api.image.repository=$DOCKER_USER/ms-api \
-            --set api.image.tag=${{ env.TAG }} \
-            --set data.image.repository=$DOCKER_USER/ms-data \
-            --set data.image.tag=${{ env.TAG }} \
-            --namespace ${NAMESPACE}
-          oc rollout status deployment/ms-front
-          oc rollout status deployment/ms-api
-          oc rollout status deployment/ms-data
+          -f ./comment-system-chart/values.yaml \
+          --namespace ${NAMESPACE} \
+          --create-namespace \
+          --wait --timeout 180s
