@@ -72,15 +72,17 @@ jobs:
           echo "Listing files:"
           ls -la
           echo "Listing comment-system-chart:"
-          ls -la comment-system-chart || echo "⚠️ No se encontró la carpeta del chart"
+          ls -la comment-system-chart || echo "No se encontró la carpeta del chart"
 
       - name: Move to repo root
         run: cd "${GITHUB_WORKSPACE}" && ls -la
 
-      - name: Deploy Helm chart
+      - name: Helm install or upgrade
+        working-directory: ${{ github.workspace }}
         run: |
-          helm upgrade --install comment-system "${GITHUB_WORKSPACE}/comment-system-chart" \
-            -f "${GITHUB_WORKSPACE}/comment-system-chart/values.yaml" \
+          echo "Current path: $(pwd)"
+          ls -la
+          helm upgrade --install comment-system ./comment-system-chart \
             --namespace ${NAMESPACE} \
             --create-namespace \
-            --wait --timeout 180s
+            -f comment-system-chart/values.yaml
