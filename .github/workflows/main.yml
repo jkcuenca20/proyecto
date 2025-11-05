@@ -72,13 +72,11 @@ jobs:
           TAG: ${{ github.run_number }}
         run: |
           oc project ${NAMESPACE} || oc new-project ${NAMESPACE}
+          echo "Current path: $(pwd)"
+          echo "Files here:"
+          ls -R
           helm upgrade --install comment-system ./comment-system-chart \
-            --namespace ${NAMESPACE} \
-            --create-namespace \
-            --set image.frontend.repository=${{ secrets.DOCKERHUB_USERNAME }}/ms-front \
-            --set image.frontend.tag=${{ github.run_number }} \
-            --set image.api.repository=${{ secrets.DOCKERHUB_USERNAME }}/ms-api \
-            --set image.api.tag=${{ github.run_number }} \
-            --set image.data.repository=${{ secrets.DOCKERHUB_USERNAME }}/ms-data \
-            --set image.data.tag=${{ github.run_number }} \
-            --wait
+            --set data.image.repository=${{ secrets.DOCKERHUB_USERNAME }}/ms-data \
+            --set data.image.tag=${{ env.TAG }} \
+            --namespace ${NAMESPACE}
+          oc rollout status deployment/ms-data
