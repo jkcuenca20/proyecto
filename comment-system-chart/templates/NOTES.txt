@@ -1,0 +1,2 @@
+To access frontend route:
+  oc get route -n {{ .Release.Namespace }} {{ .Release.Name }}-frontend

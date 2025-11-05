@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-data
+  labels:
+    app: comment-system
+    component: data
+spec:
+  replicas: {{ .Values.replicaCount.data }}
+  selector:
+    matchLabels:
+      app: comment-system
+      component: data
+  template:
+    metadata:
+      labels:
+        app: comment-system
+        component: data
+    spec:
+      containers:
+        - name: data
+          image: "{{ .Values.image.data.repository }}:{{ .Values.image.data.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.data.targetPort }}
+          env:
+            - name: DB_HOST
+              value: "{{ .Release.Name }}-postgres"
+            - name: DB_NAME
+              value: "{{ .Values.postgres.db }}"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-secret
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.data.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: comment-system
+    component: api
+spec:
+  replicas: {{ .Values.replicaCount.api }}
+  selector:
+    matchLabels:
+      app: comment-system
+      component: api
+  template:
+    metadata:
+      labels:
+        app: comment-system
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.image.api.repository }}:{{ .Values.image.api.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.api.targetPort }}
+          env:
+            - name: BACKEND_DATA_URL
+              value: "http://{{ .Release.Name }}-data:{{ .Values.service.data.port }}"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.api.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10

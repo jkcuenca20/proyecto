@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-frontend
+  labels:
+    app: comment-system
+    component: frontend
+spec:
+  replicas: {{ .Values.replicaCount.frontend }}
+  selector:
+    matchLabels:
+      app: comment-system
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: comment-system
+        component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.image.frontend.repository }}:{{ .Values.image.frontend.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.frontend.targetPort }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.frontend.targetPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10

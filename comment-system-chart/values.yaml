@@ -1,0 +1,57 @@
+namespace: jessica-cuenca-dev
+
+image:
+  frontend:
+    repository: DOCKERHUB_USER/ms-front
+    tag: latest
+  api:
+    repository: DOCKERHUB_USER/ms-api
+    tag: latest
+  data:
+    repository: DOCKERHUB_USER/ms-data
+    tag: latest
+  postgres:
+    repository: postgres
+    tag: "14"
+
+replicaCount:
+  frontend: 1
+  api: 2
+  data: 1
+
+service:
+  frontend:
+    port: 80
+    targetPort: 8080
+    type: ClusterIP
+  api:
+    port: 80
+    targetPort: 8080
+    type: ClusterIP
+  data:
+    port: 80
+    targetPort: 8080
+    type: ClusterIP
+
+postgres:
+  pvc:
+    size: 2Gi
+    storageClassName: ""
+  username: comments_user
+  password: change-me
+  db: commentsdb
+
+hpa:
+  api:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 60
+
+data:
+  image:
+    repository: jessicacuenca/ms-data
+    tag: latest
+    pullPolicy: Always
+  service:
+    port: 8080
