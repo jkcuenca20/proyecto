@@ -66,11 +66,21 @@ jobs:
           openshift_server_url: https://api.rm1.0a51.p1.openshiftapps.com:6443
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-      - name: Deploy Helm Chart
+      - name: Verify chart path
         run: |
-          oc project ${NAMESPACE} || oc new-project ${NAMESPACE}
-          helm upgrade --install comment-system ./comment-system-chart \
-          -f ./comment-system-chart/values.yaml \
-          --namespace ${NAMESPACE} \
-          --create-namespace \
-          --wait --timeout 180s
+          echo "Current directory: $(pwd)"
+          echo "Listing files:"
+          ls -la
+          echo "Listing comment-system-chart:"
+          ls -la comment-system-chart || echo "⚠️ No se encontró la carpeta del chart"
+
+      - name: Move to repo root
+        run: cd "${GITHUB_WORKSPACE}" && ls -la
+
+      - name: Deploy Helm chart
+        run: |
+          helm upgrade --install comment-system "${GITHUB_WORKSPACE}/comment-system-chart" \
+            -f "${GITHUB_WORKSPACE}/comment-system-chart/values.yaml" \
+            --namespace ${NAMESPACE} \
+            --create-namespace \
+            --wait --timeout 180s
