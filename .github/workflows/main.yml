@@ -66,17 +66,17 @@ jobs:
           openshift_server_url: https://api.rm1.0a51.p1.openshiftapps.com:6443
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-      - name: Deploy Helm chart
-        env:
-          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-          TAG: ${{ github.run_number }}
+      - name: Deploy Helm Chart
         run: |
           oc project ${NAMESPACE} || oc new-project ${NAMESPACE}
-          echo "Current path: $(pwd)"
-          echo "Files here:"
-          ls -R
           helm upgrade --install comment-system ./comment-system-chart \
-            --set data.image.repository=${{ secrets.DOCKERHUB_USERNAME }}/ms-data \
+            --set front.image.repository=$DOCKER_USER/ms-front \
+            --set front.image.tag=${{ env.TAG }} \
+            --set api.image.repository=$DOCKER_USER/ms-api \
+            --set api.image.tag=${{ env.TAG }} \
+            --set data.image.repository=$DOCKER_USER/ms-data \
             --set data.image.tag=${{ env.TAG }} \
             --namespace ${NAMESPACE}
+          oc rollout status deployment/ms-front
+          oc rollout status deployment/ms-api
           oc rollout status deployment/ms-data

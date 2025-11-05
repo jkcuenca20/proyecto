@@ -50,7 +50,7 @@ hpa:
 
 data:
   image:
-    repository: jessicacuenca/ms-data
+    repository: jkcuenca20/ms-data
     tag: latest
     pullPolicy: Always
   service:
