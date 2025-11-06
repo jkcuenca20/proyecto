@@ -49,6 +49,10 @@ jobs:
     env:
       NAMESPACE: jessica-cuenca-dev
     steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Install OC CLI
         run: |
           curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar xz
