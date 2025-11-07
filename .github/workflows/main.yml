@@ -88,5 +88,4 @@ jobs:
           ls -la
           helm upgrade --install comment-system ./comment-system-chart \
             --namespace ${NAMESPACE} \
-            --create-namespace \
             -f comment-system-chart/values.yaml
