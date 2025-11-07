@@ -19,6 +19,11 @@ kind: RoleBinding
 metadata:
   name: cicd-binding-rbac
   namespace: jessica-cuenca-dev
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: comment-system
+    meta.helm.sh/release-namespace: jessica-cuenca-dev
 subjects:
   - kind: ServiceAccount
     name: cicd-serviceaccount
