@@ -1,0 +1,24 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rbac-edit
+  namespace: jessica-cuenca-dev
+rules:
+  - apiGroups: ["", "apps", "extensions"]
+    resources: ["*"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cicd-binding-rbac
+  namespace: jessica-cuenca-dev
+subjects:
+  - kind: ServiceAccount
+    name: cicd-serviceaccount
+    namespace: jessica-cuenca-dev
+roleRef:
+  kind: Role
+  name: rbac-edit
+  apiGroup: rbac.authorization.k8s.io
