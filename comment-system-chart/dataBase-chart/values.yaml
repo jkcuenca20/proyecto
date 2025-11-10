@@ -1,0 +1,17 @@
+namespace: jessica-cuenca-dev
+
+image:
+  repository: jkcuenca20/ms-data
+  tag: latest
+
+postgres:
+  username: admin
+  password: admin123
+  db: commentdb
+  pvc:
+    size: 1Gi
+
+service:
+  port: 5432
+  targetPort: 5432
+  type: ClusterIP

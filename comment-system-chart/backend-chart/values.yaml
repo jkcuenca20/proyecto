@@ -1,0 +1,18 @@
+namespace: jessica-cuenca-dev
+
+image:
+  repository: jkcuenca20/ms-api
+  tag: latest
+
+service:
+  port: 8080
+  targetPort: 8080
+  type: ClusterIP
+
+replicaCount: 2
+
+env:
+  DATABASE_URL: "jdbc:postgresql://ms-data.jessica-cuenca-dev.svc.cluster.local:5432/commentdb"
+  DB_HOST: "ms-data.jessica-cuenca-dev.svc.cluster.local"
+  DB_USER: "admin"
+  DB_PASSWORD: "admin123"

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: dataBase-chart
+description: Helm chart para la capa de datos (ms-data + DB)
+version: 0.1.0
+appVersion: "1.0"

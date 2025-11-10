@@ -80,12 +80,23 @@ jobs:
 
       - name: Move to repo root
         run: cd "${GITHUB_WORKSPACE}" && ls -la
-
-      - name: Helm install or upgrade
+      
+      - name: Helm install or upgrade Deploy frontend
         working-directory: ${{ github.workspace }}
         run: |
           echo "Current path: $(pwd)"
           ls -la
-          helm upgrade --install comment-system ./comment-system-chart \
-            --namespace ${NAMESPACE} \
-            -f comment-system-chart/values.yaml
+          helm upgrade --install front-chart ./comment-system-chart/front-chart \
+            --namespace ${NAMESPACE} -f comment-system-chart/front-chart/values.yaml
+
+      - name: Deploy backend API
+        working-directory: ${{ github.workspace }}
+        run: |
+          helm upgrade --install backend-chart ./comment-system-chart/backend-chart \
+            --namespace ${NAMESPACE} -f comment-system-chart/backend-chart/values.yaml
+
+      - name: Deploy dataBase
+        working-directory: ${{ github.workspace }}
+        run: |
+          helm upgrade --install dataBase-chart ./comment-system-chart/dataBase-chart \
+            --namespace ${NAMESPACE} -f comment-system-chart/dataBase-chart/values.yaml
