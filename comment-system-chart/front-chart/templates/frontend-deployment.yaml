@@ -6,7 +6,7 @@ metadata:
     app: comment-system
     component: frontend
 spec:
-  replicas: {{ .Values.replicaCount.frontend }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: comment-system
@@ -19,9 +19,9 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: "{{ .Values.image.frontend.repository }}:{{ .Values.image.frontend.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.service.frontend.targetPort }}
+            - containerPort: {{ .Values.service.targetPort }}
           readinessProbe:
             httpGet:
               path: /
