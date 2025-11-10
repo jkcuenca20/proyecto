@@ -16,3 +16,9 @@ env:
   DB_HOST: "ms-data.jessica-cuenca-dev.svc.cluster.local"
   DB_USER: "admin"
   DB_PASSWORD: "admin123"
+
+  hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
