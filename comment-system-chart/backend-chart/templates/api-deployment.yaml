@@ -21,13 +21,13 @@ spec:
         - name: api
           image: "{{ .Values.image.api.repository }}:{{ .Values.image.api.tag }}"
           ports:
-            - containerPort: {{ .Values.service.api.targetPort }}
+            - containerPort: {{ .Values.service.targetPort }}
           env:
             - name: BACKEND_DATA_URL
               value: "http://{{ .Release.Name }}-data:{{ .Values.service.data.port }}"
           readinessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.service.api.targetPort }}
+              port: {{ .Values.service.targetPort }}
             initialDelaySeconds: 5
             periodSeconds: 10

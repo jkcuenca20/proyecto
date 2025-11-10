@@ -17,4 +17,4 @@ spec:
               component: frontend
       ports:
         - protocol: TCP
-          port: {{ .Values.service.api.port }}
+          port: {{ .Values.service.port }}
