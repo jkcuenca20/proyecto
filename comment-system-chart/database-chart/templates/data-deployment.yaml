@@ -6,7 +6,7 @@ metadata:
     app: comment-system
     component: data
 spec:
-  replicas: {{ .Values.replicaCount.data }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: comment-system
@@ -19,12 +19,9 @@ spec:
     spec:
       containers:
         - name: data
-          image: "{{ .Values.image.data.repository }}:{{ .Values.image.data.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: {{ .Values.service.data.targetPort }}
-          envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}-config
+            - containerPort: {{ .Values.service.targetPort }}
           env:
             - name: DB_HOST
               value: "{{ .Release.Name }}-postgres"
@@ -43,14 +40,6 @@ spec:
           readinessProbe:
             httpGet:
               path: /health
-              port: {{ .Values.service.data.targetPort }}
+              port: {{ .Values.service.targetPort }}
             initialDelaySeconds: 5
             periodSeconds: 10
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "256Mi"
-      restartPolicy: Always
