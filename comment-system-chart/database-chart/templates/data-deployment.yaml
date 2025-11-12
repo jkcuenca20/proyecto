@@ -22,6 +22,9 @@ spec:
           image: "{{ .Values.image.data.repository }}:{{ .Values.image.data.tag }}"
           ports:
             - containerPort: {{ .Values.service.data.targetPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-config
           env:
             - name: DB_HOST
               value: "{{ .Release.Name }}-postgres"
@@ -43,3 +46,11 @@ spec:
               port: {{ .Values.service.data.targetPort }}
             initialDelaySeconds: 5
             periodSeconds: 10
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+      restartPolicy: Always
