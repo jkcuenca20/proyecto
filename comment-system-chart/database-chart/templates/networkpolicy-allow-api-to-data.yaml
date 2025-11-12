@@ -17,4 +17,4 @@ spec:
               component: api
       ports:
         - protocol: TCP
-          port: {{ .Values.service.data.port | default 8080 }}
+          port: {{ .Values.service.port | default 8080 }}
