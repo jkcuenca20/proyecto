@@ -95,8 +95,8 @@ jobs:
           helm upgrade --install backend-chart ./comment-system-chart/backend-chart \
             --namespace ${NAMESPACE} -f comment-system-chart/backend-chart/values.yaml
 
-      - name: Deploy dataBase
+      - name: Deploy data base
         working-directory: ${{ github.workspace }}
         run: |
-          helm upgrade --install dataBase-chart ./comment-system-chart/dataBase-chart \
-            --namespace ${NAMESPACE} -f comment-system-chart/dataBase-chart/values.yaml
+          helm upgrade --install database-chart ./comment-system-chart/database-chart \
+            --namespace ${NAMESPACE} -f comment-system-chart/database-chart/values.yaml
