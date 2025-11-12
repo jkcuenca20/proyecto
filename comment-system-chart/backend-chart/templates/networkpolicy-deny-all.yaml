@@ -1,9 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ .Release.Name }}-deny-all-ingress
+  name: {{ .Release.Name }}-deny-all
 spec:
-  podSelector: {}
+  podSelector: {}   # Afecta a todos los pods del namespace
   policyTypes:
     - Ingress
-  ingress: []
+    - Egress        # <-- Añadido: también bloquea salida (opcional)
+  ingress: []        # No se permite ningún tráfico entrante
+  egress: []         # No se permite ningún tráfico saliente

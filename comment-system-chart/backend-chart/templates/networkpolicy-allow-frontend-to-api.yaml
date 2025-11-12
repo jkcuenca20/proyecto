@@ -5,7 +5,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: comment-system
       component: api
   policyTypes:
     - Ingress
@@ -13,7 +13,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: {{ .Release.Name }}
+              app: comment-system
               component: frontend
       ports:
         - protocol: TCP
